@@ -12,6 +12,7 @@ import 'package:infoin_ewallet/Pages/home.dart';
 import 'package:infoin_ewallet/Pages/pesan.dart';
 import 'package:infoin_ewallet/Pages/Profile/profile.dart';
 import 'package:infoin_ewallet/Pages/riwayat.dart';
+import 'package:infoin_ewallet/Provider/asuransi.dart';
 import 'package:infoin_ewallet/Provider/dark_mode.dart';
 import 'package:infoin_ewallet/Provider/kontak.dart';
 import 'package:infoin_ewallet/Provider/transaksi.dart';
@@ -27,6 +28,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => TransaksiProvider()),
       ChangeNotifierProvider(create: (_) => DarkMode()),
       ChangeNotifierProvider(create: (_) => KontakProvider()),
+      ChangeNotifierProvider(create: (_) => AsuransiProvider()),
     ],
     child: const MainApp(),
   ));

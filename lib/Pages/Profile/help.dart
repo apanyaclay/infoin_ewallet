@@ -1,13 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Help extends StatelessWidget {
   const Help({super.key});
+
+  void _showCustomerServiceBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        final Uri waUri = Uri.parse('https://wa.me/6282170474047');
+        return BottomSheet(
+          onClosing: () {},
+          builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            height: 150,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Hubungi Customer Service',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const Text('Anda akan diarahkan ke aplikasi WhatsApp untuk menghubungi customer service.'),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    launchUrl(waUri);
+                  },
+                  child: const Text('Hubungi Sekarang'),
+                ),
+              ],
+            ),
+          );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Help"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.contact_phone),
+            onPressed: () => _showCustomerServiceBottomSheet(context),
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -45,8 +88,8 @@ class HelpItem extends StatefulWidget {
   const HelpItem({
     required this.title,
     required this.description,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _HelpItemState createState() => _HelpItemState();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infoin_ewallet/Pages/topup_detail.dart';
 import 'package:infoin_ewallet/Provider/transaksi.dart';
 import 'package:infoin_ewallet/Provider/wallet.dart';
 import 'package:infoin_ewallet/Widget/custom_button.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 enum PaymentMethod { bankTransfer, alfamart, indomaret }
+
 enum Bank { BRI, BCA, Mandiri, BNI, PermataBank }
 
 class TopUp extends StatefulWidget {
@@ -39,39 +41,63 @@ class _TopUpState extends State<TopUp> {
     String receiverName = '';
     String avatar = '';
 
-
     bool success = false;
     switch (_selectedPaymentMethod) {
       case PaymentMethod.bankTransfer:
         receiverName = _selectedBank.toString().split('.').last;
         avatar = 'assets/images/logo-${receiverName.toLowerCase()}.png';
-        success = Provider.of<WalletProvider>(context, listen: false).increaseBalance(nominal);
+        success = Provider.of<WalletProvider>(context, listen: false)
+            .increaseBalance(nominal);
         break;
       case PaymentMethod.alfamart:
         receiverName = 'Alfamart';
         avatar = 'assets/images/logo-${receiverName.toLowerCase()}.png';
-        success = Provider.of<WalletProvider>(context, listen: false).increaseBalance(nominal);
+        success = Provider.of<WalletProvider>(context, listen: false)
+            .increaseBalance(nominal);
         break;
       case PaymentMethod.indomaret:
         receiverName = 'Indomaret';
         avatar = 'assets/images/logo-${receiverName.toLowerCase()}.png';
-        success = Provider.of<WalletProvider>(context, listen: false).increaseBalance(nominal);
+        success = Provider.of<WalletProvider>(context, listen: false)
+            .increaseBalance(nominal);
         break;
     }
     Map<String, dynamic> newTransaction = {
-    'name': receiverName,
-    'type': 'Pemasukan',
-    'category': 'Top Up',
-    'amount': 'Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)}',
-    'date': DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
-    'avatar': avatar
-  };
+      'name': receiverName,
+      'type': 'Pemasukan',
+      'category': 'Top Up',
+      'amount': 'Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)}',
+      'date': DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
+      'avatar': avatar,
+      'messageContent':
+      'Transaksi pemasukan: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil top up dari ${receiverName}'
+    };
 
     if (success) {
-      Provider.of<TransaksiProvider>(context, listen: false).addTransaction(newTransaction);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Top Up berhasil')),
+      Provider.of<TransaksiProvider>(context, listen: false)
+          .addTransaction(newTransaction);
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Mencegah pengguna menutup dialog dengan menekan di luar dialog
+        builder: (BuildContext context) {
+          return const Center(
+            child:
+                CircularProgressIndicator(), // Menampilkan CircularProgressIndicator
+          );
+        },
       );
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop(); // Menutup dialog loading
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TopUpDetail(transactionData: newTransaction),
+          ),
+        ).catchError((e) {
+          print('Error navigating to TransactionSuccessPage: $e');
+        });
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Top Up gagal. Silakan coba lagi.')),
@@ -105,7 +131,13 @@ class _TopUpState extends State<TopUp> {
               items: PaymentMethod.values.map((PaymentMethod method) {
                 return DropdownMenuItem<PaymentMethod>(
                   value: method,
-                  child: Text(method == PaymentMethod.bankTransfer ? 'Bank Transfer' : method == PaymentMethod.alfamart ? 'Alfamart' : method == PaymentMethod.indomaret ? 'Indomaret' : method.toString().split('.').last),
+                  child: Text(method == PaymentMethod.bankTransfer
+                      ? 'Bank Transfer'
+                      : method == PaymentMethod.alfamart
+                          ? 'Alfamart'
+                          : method == PaymentMethod.indomaret
+                              ? 'Indomaret'
+                              : method.toString().split('.').last),
                 );
               }).toList(),
             ),

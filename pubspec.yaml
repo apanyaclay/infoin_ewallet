@@ -1,10 +1,10 @@
 name: infoin_ewallet
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -12,8 +12,11 @@ dependencies:
   flutter_svg: ^2.0.9
   image_picker: ^1.1.1
   intl: ^0.19.0
+  mnc_identifier_ocr: ^1.0.20
   mobile_scanner: ^5.1.1
   provider: ^6.1.2
+  timer_builder: ^2.0.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0

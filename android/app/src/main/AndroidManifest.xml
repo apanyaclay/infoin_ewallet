@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+    <intent>
+    <action android:name="android.intent.action.VIEW" />
+    <data android:scheme="tel"/>
+    </intent>
+    </queries>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="infoin_ewallet"
         android:name="${applicationName}"
@@ -30,6 +37,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <activity android:name="id.mncinnovation.ocr.CaptureOCRActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and

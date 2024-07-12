@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infoin_ewallet/Pages/metode_pembayaran.dart';
 import 'package:infoin_ewallet/Pages/pin.dart';
 import 'package:infoin_ewallet/Pages/transaksi_sukses.dart';
 import 'package:infoin_ewallet/Provider/transaksi.dart';
@@ -17,67 +18,6 @@ class TopUpInvestasi extends StatefulWidget {
 class _TopUpInvestasiState extends State<TopUpInvestasi> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _topUpController = TextEditingController();
-
-  void _transfer() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return PinDialog(
-          onPinEntered: () {
-            Navigator.of(context).pop();
-            _prosesTransfer();
-          },
-        );
-      },
-    );
-  }
-
-  void _prosesTransfer() {
-    double nominal = double.tryParse(_topUpController.text) ?? 0.0;
-
-    if (nominal <= 0 ||
-        Provider.of<WalletProvider>(context, listen: false).balance! <
-            nominal) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Nominal tidak valid atau saldo tidak cukup')),
-      );
-      return;
-    }
-
-    bool success = Provider.of<WalletProvider>(context, listen: false)
-        .decreaseBalance(nominal);
-    var userProfile = Provider.of<UserProfile>(context, listen: false);
-    if (success) {
-      userProfile.increaseBalance(nominal);
-      Map<String, dynamic> newTransaction = {
-        'name': 'Bibit',
-        'type': 'Pengeluaran',
-        'category': 'Investasi',
-        'amount': 'Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)}',
-        'date': DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
-        'avatar': 'assets/images/logo-bibit.png'
-      };
-      Provider.of<TransaksiProvider>(context, listen: false)
-          .addTransaction(newTransaction);
-      try {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                TransactionSuccessPage(transactionData: newTransaction),
-          ),
-        );
-      } catch (e) {
-        print('Error navigating to TransactionSuccessPage: $e');
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Transaksi gagal. Silakan coba lagi.')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +53,28 @@ class _TopUpInvestasiState extends State<TopUpInvestasi> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _transfer,
+                  onPressed: () {
+                    double nominal =
+                        double.tryParse(_topUpController.text) ?? 0.0;
+                    final newTransaction = {
+                      'name': 'Bibit',
+                      'type': 'Pengeluaran',
+                      'category': 'Investasi',
+                      'amount': nominal,
+                      'date': DateFormat('dd MMM yyyy, HH:mm')
+                          .format(DateTime.now()),
+                      'avatar': 'assets/images/logo-bibit.png',
+                      'messageContent':
+                          'Transaksi pengeluaran: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil di transfer ke Bibit'
+                    };
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MetodePembayaran(transaction: newTransaction),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 15),

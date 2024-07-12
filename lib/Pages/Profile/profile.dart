@@ -42,10 +42,16 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var userProfile = Provider.of<UserProfile>(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        elevation: 0,
+        centerTitle: true,
+        leading: Container(),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 100),
+          const SizedBox(height: 50),
           CircleAvatar(
             radius: 50,
             backgroundImage: userProfile.avatarImage != null
@@ -58,6 +64,7 @@ class _ProfileState extends State<Profile> {
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
+          if(userProfile.verifikasi == false)
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: SizedBox(
@@ -73,13 +80,14 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.account_circle_outlined),
             title: const Text('My Info'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyInfo()),
+                MaterialPageRoute(builder: (context) => const MyInfo()),
               );
             },
           ),

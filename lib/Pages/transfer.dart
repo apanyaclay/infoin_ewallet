@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class Transfer extends StatefulWidget {
-
   const Transfer({super.key});
 
   @override
@@ -24,10 +23,11 @@ class _TransferState extends State<Transfer> {
 
   void _cariPenerima() {
     String nomorHP = _nomorHPController.text;
-    var penerima = Provider.of<KontakProvider>(context, listen: false).kontak.firstWhere(
-      (penerima) => penerima['nomorHP'] == nomorHP,
-      orElse: () => {'nama': '', 'nomorHP': ''},
-    );
+    var penerima =
+        Provider.of<KontakProvider>(context, listen: false).kontak.firstWhere(
+              (penerima) => penerima['nomorHP'] == nomorHP,
+              orElse: () => {'nama': '', 'nomorHP': ''},
+            );
     setState(() {
       _namaPenerima = penerima['nama'] ?? '';
       _isNomorHPValid = _namaPenerima != null && _namaPenerima!.isNotEmpty;
@@ -43,25 +43,29 @@ class _TransferState extends State<Transfer> {
       builder: (BuildContext context) {
         return PinDialog(
           onPinEntered: () {
-              Navigator.of(context).pop();
+            Navigator.of(context).pop();
             _prosesTransfer();
           },
         );
       },
     );
   }
-  
+
   void _prosesTransfer() {
     double nominal = double.tryParse(_nominalController.text) ?? 0.0;
 
-    if (nominal <= 0 || Provider.of<WalletProvider>(context, listen: false).balance! < nominal) {
+    if (nominal <= 0 ||
+        Provider.of<WalletProvider>(context, listen: false).balance! <
+            nominal) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nominal tidak valid atau saldo tidak cukup')),
+        const SnackBar(
+            content: Text('Nominal tidak valid atau saldo tidak cukup')),
       );
       return;
     }
 
-    bool success = Provider.of<WalletProvider>(context, listen: false).decreaseBalance(nominal);
+    bool success = Provider.of<WalletProvider>(context, listen: false)
+        .decreaseBalance(nominal);
 
     if (success) {
       Map<String, dynamic> newTransaction = {
@@ -70,21 +74,35 @@ class _TransferState extends State<Transfer> {
         'category': 'Transfer',
         'amount': 'Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)}',
         'date': DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
-        'avatar': 'assets/images/img_ellipse_17.png'
+        'avatar': 'assets/images/img_ellipse_17.png',
+        'messageContent': 'Transaksi pengeluaran: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil di transfer ke ${_namaPenerima}'
       };
-      Provider.of<TransaksiProvider>(context, listen: false).addTransaction(newTransaction);
-      try {
+      Provider.of<TransaksiProvider>(context, listen: false)
+          .addTransaction(newTransaction);
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Mencegah pengguna menutup dialog dengan menekan di luar dialog
+        builder: (BuildContext context) {
+          return const Center(
+            child:
+                CircularProgressIndicator(), // Menampilkan CircularProgressIndicator
+          );
+        },
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop(); // Menutup dialog loading
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TransactionSuccessPage(transactionData: newTransaction),
+            builder: (context) =>
+                TransactionSuccessPage(transactionData: newTransaction),
           ),
         ).catchError((e) {
           print('Error navigating to TransactionSuccessPage: $e');
         });
-      } catch (e) {
-        print('Error navigating to TransactionSuccessPage: $e');
-      }
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Transfer gagal. Silakan coba lagi.')),
@@ -140,12 +158,8 @@ class _TransferState extends State<Transfer> {
               ),
               enabled: _isNomorHPValid,
             ),
-            Text(
-              'Saldo : ${saldoFormat.format(wallet.balance ?? 0)}',
-              style: const TextStyle(
-                fontSize: 16
-              )
-            ),
+            Text('Saldo : ${saldoFormat.format(wallet.balance ?? 0)}',
+                style: const TextStyle(fontSize: 16)),
             const Spacer(),
             CustomButton(
               onPressed: _transfer,

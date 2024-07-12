@@ -74,27 +74,24 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<UserProfile>(context);
     var wallet = Provider.of<WalletProvider>(context);
     final saldoFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ');
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Waletin'),
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image.asset('assets/images/wallet_logo.png',fit: BoxFit.contain,),
+          
+        ),
+      ),
       body: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Text(
-                      'Hi, ${user.name}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                  ],
-                ),
-                const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
                   height: 80,
