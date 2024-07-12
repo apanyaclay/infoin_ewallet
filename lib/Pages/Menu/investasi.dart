@@ -39,17 +39,18 @@ class _InvestasiState extends State<Investasi> {
     final dateFormat = DateFormat('dd MMM yyyy, HH:mm');
     double totalImbalHasil = 0;
 
-    // Iterate through each transaction to calculate the imbal hasil
     for (var transaction
         in Provider.of<TransaksiProvider>(context, listen: false)
             .transactions) {
       if (transaction['category'] == 'Investasi') {
         DateTime transactionDate = dateFormat.parse(transaction['date']);
         int daysDifference = DateTime.now().difference(transactionDate).inDays;
-
+        String amountStr =
+            transaction['amount'].replaceAll('Rp ', '').replaceAll('.', '');
+        double amount = double.parse(amountStr);
         // Calculate daily imbal hasil
         double dailyImbalHasil =
-            portofolio * (imbalHasilSatuTahun / 100 / 365) * daysDifference;
+            amount * (imbalHasilSatuTahun / 100 / 365) * daysDifference;
         totalImbalHasil += dailyImbalHasil;
       }
     }
@@ -88,7 +89,8 @@ class _InvestasiState extends State<Investasi> {
         'amount': 'Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)}',
         'date': DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
         'avatar': 'assets/images/logo-bibit.png',
-        'messageContent': 'Transaksi pemasukan: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil masuk dari Penjualan Investasi'
+        'messageContent':
+            'Transaksi pemasukan: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil masuk dari Penjualan Investasi'
       };
       Provider.of<TransaksiProvider>(context, listen: false)
           .addTransaction(newTransaction);

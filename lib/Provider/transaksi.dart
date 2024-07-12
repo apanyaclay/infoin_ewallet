@@ -2,32 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransaksiProvider extends ChangeNotifier {
-  List<Map<String, dynamic>> _transactions = [
-    // {
-    //   'name': 'Bank BRI',
-    //   'type': 'Pemasukan',
-    //   'category': 'Top Up',
-    //   'amount': 'Rp 100.000',
-    //   'date': '30 Apr 2024, 15:47',
-    //   'avatar': 'assets/images/img_ellipse_17.png'
-    // },
-    // {
-    //   'name': 'Jane Smith',
-    //   'type': 'Pengeluaran',
-    //   'category': 'Transfer',
-    //   'amount': 'Rp 50.000',
-    //   'date': '20 Apr 2024, 15:47',
-    //   'avatar': 'assets/images/img_ellipse_17.png'
-    // },
-    // {
-    //   'name': 'Alfamart',
-    //   'type': 'Pemasukan',
-    //   'category': 'Top Up',
-    //   'amount': 'Rp 100.000',
-    //   'date': '10 Apr 2024, 15:47',
-    //   'avatar': 'assets/images/img_ellipse_17.png'
-    // },
-  ];
+  List<Map<String, dynamic>> _transactions = [];
 
   TransaksiProvider() {
     filterTransactions(selectedFilterOption);

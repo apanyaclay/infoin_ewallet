@@ -58,9 +58,9 @@ class _VersiKTPState extends State<VersiKTP> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                debugPrint('Verifikasi KTP dilakukan');
                 setState(() {
-                Provider.of<UserProfile>(context).verifikasi = true;
+                  Provider.of<UserProfile>(context).verifikasi = true;
+                  Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                 });
               },
               child: const Text('Ya'),
@@ -86,7 +86,6 @@ class _VersiKTPState extends State<VersiKTP> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             if (result?.isSuccess == true)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +244,7 @@ class _VersiKTPState extends State<VersiKTP> {
                   ),
                 ],
               ),
-              if (result?.isSuccess == false || result?.isSuccess == null)
+            if (result?.isSuccess == false || result?.isSuccess == null)
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:infoin_ewallet/Pages/bayar.dart';
 import 'package:infoin_ewallet/Pages/promo.dart';
@@ -20,34 +21,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  int _currentAdIndex = 0;
   final List<String> _advertisementImages = [
     'assets/images/img_rectangle_4.png',
     'assets/images/ads2.jpeg',
     'assets/images/ads3.png',
   ];
-
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      setState(() {
-        _currentAdIndex = (_currentAdIndex + 1) % _advertisementImages.length;
-      });
-    });
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -287,15 +265,25 @@ class _HomeState extends State<Home> {
                     const SizedBox(
                       height: 35,
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      child: Image.asset(
-                        _advertisementImages[_currentAdIndex],
-                        height: 170,
-                        fit: BoxFit.cover,
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 170.0,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        enlargeCenterPage: true,
+                        viewportFraction: 1.0,
                       ),
-                    )
+                      items: _advertisementImages.map((item) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Image.asset(
+                              item,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ],
                 ))
               ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WalletProvider extends ChangeNotifier {
-  double _balance = 0.0;
+  double _balance = 100000;
 
   double? get balance => _balance;
 

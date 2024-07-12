@@ -83,7 +83,7 @@ class UserProfile extends ChangeNotifier {
 
   bool increaseNilaiPortofolio(double amount) {
     if (amount > 0) {
-      _nilaiPortofolio += amount;
+      _nilaiPortofolio = amount;
       notifyListeners();
       return true;
     }

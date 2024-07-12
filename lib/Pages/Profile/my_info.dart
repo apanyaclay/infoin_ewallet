@@ -93,7 +93,19 @@ class _MyInfoState extends State<MyInfo> {
                   userProfile.name = _name;
                   userProfile.email = _email;
                   userProfile.phoneNumber = _phoneNumber;
-                  userProfile.saveProfile();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Information updated successfully'),
+                      duration: const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.floating,
+                      action: SnackBarAction(
+                        label: 'OK',
+                        onPressed: () {
+                          // Optional: Bisa melakukan sesuatu ketika tombol OK diklik
+                        },
+                      ),
+                    ),
+                  );
                 },
                 child: const Text('Save'),
               ),

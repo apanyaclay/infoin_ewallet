@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:infoin_ewallet/Pages/metode_pembayaran.dart';
+import 'package:infoin_ewallet/Provider/user_profile.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TopUpInvestasi extends StatefulWidget {
   const TopUpInvestasi({super.key});
@@ -14,6 +16,7 @@ class _TopUpInvestasiState extends State<TopUpInvestasi> {
   final TextEditingController _topUpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProfile>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Top Up Investasi'),
@@ -61,6 +64,7 @@ class _TopUpInvestasiState extends State<TopUpInvestasi> {
                       'messageContent':
                           'Transaksi pengeluaran: Rp ${NumberFormat('#,##0', 'id_ID').format(nominal)} berhasil di transfer ke Bibit'
                     };
+                    user.increasePortofolio(nominal);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
