@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infoin_ewallet/Pages/metode_pembayaran.dart';
-import 'package:infoin_ewallet/Provider/transaksi.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 enum DonationTarget { pantiAsuhan, mesjid, gereja, bencana }
 

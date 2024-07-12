@@ -4,7 +4,6 @@ import 'package:infoin_ewallet/Pages/bayar.dart';
 import 'package:infoin_ewallet/Pages/promo.dart';
 import 'package:infoin_ewallet/Pages/transfer.dart';
 import 'package:infoin_ewallet/Pages/topup.dart';
-import 'package:infoin_ewallet/Provider/user_profile.dart';
 import 'package:infoin_ewallet/Provider/wallet.dart';
 import 'package:infoin_ewallet/Widget/bottom_navigation.dart';
 import 'package:infoin_ewallet/Widget/home_menu_item.dart';

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:infoin_ewallet/Pages/Auth/login.dart';
 import 'package:infoin_ewallet/Provider/user_profile.dart';
@@ -17,7 +15,6 @@ class _RegisterState extends State<Register> {
   String _name = '';
   String _email = '';
   String _password = '';
-  String _retypePassword = '';
   int _phoneNumber = 0;
 
   @override
@@ -125,11 +122,6 @@ class _RegisterState extends State<Register> {
                       labelText: 'Retype Password',
                       border: OutlineInputBorder(),
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _retypePassword = value;
-                      });
-                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please retype your password';

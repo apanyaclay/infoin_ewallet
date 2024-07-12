@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infoin_ewallet/Pages/metode_pembayaran.dart';
-import 'package:infoin_ewallet/Pages/pin.dart';
-import 'package:infoin_ewallet/Pages/transaksi_sukses.dart';
-import 'package:infoin_ewallet/Provider/transaksi.dart';
-import 'package:infoin_ewallet/Provider/user_profile.dart';
-import 'package:infoin_ewallet/Provider/wallet.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class TopUpInvestasi extends StatefulWidget {
   const TopUpInvestasi({super.key});
